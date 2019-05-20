@@ -8,6 +8,7 @@ RUN apk add --no-cache \
 
 RUN apk update && apk add \
     gcc \
+    shadow \
     tcpdump \
     git \
     htop \
@@ -33,20 +34,27 @@ RUN apk update && apk add \
   && wget https://bootstrap.pypa.io/get-pip.py \
   && python3 get-pip.py \
   && pip3 install \
-#    docker-compose \
     dnspython
+
+# Install Digall
 RUN git clone https://github.com/jklaiber/digall_python
 RUN cd digall_python \
 RUN chmod +x digall.py \
 RUN mv digall.py /bin/digall.py \
 RUN ln -s digall.py digall
 
+# Solve Issues
 RUN wget https://github.com/bcicen/ctop/releases/download/v0.7.1/ctop-0.7.1-linux-amd64 -O /usr/local/bin/ctop && chmod +x /usr/local/bin/ctop
 RUN mv /usr/sbin/tcpdump /usr/bin/tcpdump
+
+RUN rm -f /etc/bash.bashrc
+
+COPY bash.bashrc /etc/bash.bashrc
 
 ADD motd /etc/motd
 
 EXPOSE 7681
 
 ENTRYPOINT ["/sbin/tini", "--"]
+
 CMD ["ttyd", "bash"]
