@@ -12,6 +12,6 @@ Simple Container with TTYD and additional packages.
 ```
 ## Usage
 ```
-[user@netorch ~]$ docker run -d -p 7681:7681 -n automan automan:latest
+[user@netorch ~]$ docker run -d -p 7681:7681 --name automan jklaiber/automan:latest
 ```
 [http://localhost:7681](http://localhost:7681)
